@@ -118,8 +118,23 @@ export class AppComponent {
     this.hubConnection.on('IncreasePlayersChoices', (choiceIndex: number) => {
       this.zone.run(() => {
         if (this.currentQuestion) {
+          console.log('Increase choice ' + choiceIndex);
           this.currentQuestion.playerChoices[choiceIndex]++;
         }
+      });
+    });
+
+    this.hubConnection.on('GoodAnswer', () => {
+      this.zone.run(() => {
+        alert('Bonne réponse !');
+        this.nbRightAnswers++;
+      });
+    });
+
+    this.hubConnection.on('BadAnswer', (rightIndex: number) => {
+      console.log('Mauvaise réponse ! La bonne réponse était ' + rightIndex);
+      this.zone.run(() => {
+        alert('Mauvaise réponse ! La bonne réponse était ' + this.currentQuestion?.answers[rightIndex]);
       });
     });
 
